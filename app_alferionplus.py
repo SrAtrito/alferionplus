@@ -144,8 +144,6 @@ with tab_visita:
         with col_b:
             cliente = st.text_input("Nome do Cliente", key="cliente")
 
-        cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
-
         col_c, col_d = st.columns([1, 1])
         with col_c:
             endereco = st.text_input("Endereço da Instalação", key="endereco")
@@ -572,6 +570,8 @@ with tab_visita:
                 horizontal=True,
                 key="caminhao_munk"
             )
+
+        cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
 
     with st.expander("📌 Pendências", expanded=False):
         pend_col1, pend_col2, pend_col3 = st.columns(3)
