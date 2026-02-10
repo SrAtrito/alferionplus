@@ -144,6 +144,8 @@ with tab_visita:
         with col_b:
             cliente = st.text_input("Nome do Cliente", key="cliente")
 
+        cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
+
         col_c, col_d = st.columns([1, 1])
         with col_c:
             endereco = st.text_input("Endereço da Instalação", key="endereco")
@@ -621,6 +623,7 @@ with tab_visita:
         data = {
             "Ordem de Venda": ordem_venda,
             "Cliente": cliente,
+            "CPF / CNPJ": cpf_cnpj,
             "Endereço da Instalação": endereco,
             "Email": email,
             "Tipo de Serviço": tipo_servico,
