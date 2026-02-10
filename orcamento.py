@@ -418,6 +418,7 @@ def _collect_visita_report_row():
         "Aba": "Visita",
         "Ordem de Venda": st.session_state.get("ordem_venda", ""),
         "Cliente": st.session_state.get("cliente", ""),
+        "CPF / CNPJ": st.session_state.get("cpf_cnpj", ""),
         "Endereço": st.session_state.get("endereco", ""),
         "Email": st.session_state.get("email", ""),
         "Tipo de Serviço": st.session_state.get("tipo_servico", ""),
