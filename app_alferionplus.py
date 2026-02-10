@@ -186,14 +186,17 @@ with tab_visita:
                 key="tipo_local",
             )
 
-        col3, col4, col5 = st.columns([1, 1, 1.2])
+        col3, col4 = st.columns([1, 1])
         with col3:
             tecnico = st.text_input("Técnico Responsável pela Visita", key="tecnico")
         with col4:
             data_hora = st.date_input("Data da Visita", key="data_hora")
+
+        col5, col6 = st.columns([1.2, 1])
         with col5:
             cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
 
+        with col6:
             deslocamento_necessario = st.radio(
                 "Deslocamento?",
                 ["Sim", "Não"],
@@ -202,20 +205,20 @@ with tab_visita:
             )
 
         if deslocamento_necessario == "Sim":
-            col6, col7, col8 = st.columns([1, 1, 1])
-            with col6:
+            col7, col8, col9 = st.columns([1, 1, 1])
+            with col7:
                 distancia_km = st.number_input(
                     "Distância (km)",
                     min_value=0.0,
                     step=1.0,
                     key="distancia_km",
                 )
-            with col7:
+            with col8:
                 tempo_viagem = st.text_input(
                     "Tempo de Viagem (ex: 1h20min)",
                     key="tempo_viagem",
                 )
-            with col8:
+            with col9:
                 custo_pedagios = st.number_input(
                     "Custo com Pedágios (R$)",
                     min_value=0.0,
