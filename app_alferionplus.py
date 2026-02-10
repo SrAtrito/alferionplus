@@ -146,12 +146,8 @@ with tab_visita:
 
         col_c, col_d = st.columns([1, 1])
         with col_c:
-            cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
-        with col_d:
             endereco = st.text_input("Endereço da Instalação", key="endereco")
-
-        col_e, col_f = st.columns([1, 1])
-        with col_e:
+        with col_d:
             email = st.text_input("Email para Contato", key="email")
 
         col1, col2 = st.columns([1, 1])
@@ -190,34 +186,36 @@ with tab_visita:
                 key="tipo_local",
             )
 
-        col3, col4 = st.columns([1, 1])
+        col3, col4, col5 = st.columns([1, 1, 1.2])
         with col3:
             tecnico = st.text_input("Técnico Responsável pela Visita", key="tecnico")
         with col4:
             data_hora = st.date_input("Data da Visita", key="data_hora")
+        with col5:
+            cpf_cnpj = st.text_input("CPF / CNPJ", key="cpf_cnpj")
 
-        deslocamento_necessario = st.radio(
-            "Deslocamento?",
-            ["Sim", "Não"],
-            horizontal=True,
-            key="deslocamento_necessario",
-        )
+            deslocamento_necessario = st.radio(
+                "Deslocamento?",
+                ["Sim", "Não"],
+                horizontal=True,
+                key="deslocamento_necessario",
+            )
 
         if deslocamento_necessario == "Sim":
-            col5, col6, col7 = st.columns([1, 1, 1])
-            with col5:
+            col6, col7, col8 = st.columns([1, 1, 1])
+            with col6:
                 distancia_km = st.number_input(
                     "Distância (km)",
                     min_value=0.0,
                     step=1.0,
                     key="distancia_km",
                 )
-            with col6:
+            with col7:
                 tempo_viagem = st.text_input(
                     "Tempo de Viagem (ex: 1h20min)",
                     key="tempo_viagem",
                 )
-            with col7:
+            with col8:
                 custo_pedagios = st.number_input(
                     "Custo com Pedágios (R$)",
                     min_value=0.0,
