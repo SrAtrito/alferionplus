@@ -260,7 +260,13 @@ with tab_visita:
                 key="quantidade_carregadores",
             )
 
-        st.markdown("**Potência dos carregadores:**")
+        quantidade_carregadores_int = int(quantidade_carregadores)
+
+        if quantidade_carregadores_int <= 1:
+            st.markdown("**Potência dos carregadores:**")
+        else:
+            st.markdown("**Potências dos carregadores:**")
+
         opcoes_potencia = [
             "",
             "0 kW",
@@ -272,19 +278,36 @@ with tab_visita:
             "44 kW",
             "Outro",
         ]
-        potencia_selecionada = st.radio(
-            "Selecione a potência",
-            opcoes_potencia,
-            horizontal=True,
-            key="potencia_carregador",
-        )
-        if potencia_selecionada == "Outro":
-            st.number_input(
-                "Potência personalizada (kW)",
-                min_value=0.0,
-                step=0.1,
-                key="pot_outro_valor",
+
+        if quantidade_carregadores_int <= 1:
+            potencia_selecionada = st.radio(
+                "Selecione a potência",
+                opcoes_potencia,
+                horizontal=True,
+                key="potencia_carregador_1",
             )
+            if potencia_selecionada == "Outro":
+                st.number_input(
+                    "Potência personalizada do carregador (kW)",
+                    min_value=0.0,
+                    step=0.1,
+                    key="pot_outro_valor_1",
+                )
+        else:
+            for i in range(1, quantidade_carregadores_int + 1):
+                potencia_selecionada = st.radio(
+                    f"Potência do carregador {i}",
+                    opcoes_potencia,
+                    horizontal=True,
+                    key=f"potencia_carregador_{i}",
+                )
+                if potencia_selecionada == "Outro":
+                    st.number_input(
+                        f"Potência personalizada do carregador {i} (kW)",
+                        min_value=0.0,
+                        step=0.1,
+                        key=f"pot_outro_valor_{i}",
+                    )
 
         col_marca, col_tipo = st.columns([1, 1])
         with col_marca:
@@ -607,11 +630,23 @@ with tab_visita:
         from pathlib import Path
         # Recalcula soma de percursos
         total_dist = sum(t[1] for t in st.session_state.percursos) if "percursos" in st.session_state else 0
-        potencia_carregador = st.session_state.get("potencia_carregador", "")
-        if potencia_carregador == "Outro":
-            potencia_carregador_val = st.session_state.get("pot_outro_valor", 0.0)
+        quantidade_carregadores_int = int(st.session_state.get("quantidade_carregadores", 0))
+        potencias_carregadores = []
+        for i in range(1, quantidade_carregadores_int + 1):
+            potencia_carregador = st.session_state.get(f"potencia_carregador_{i}", "")
+            if potencia_carregador == "Outro":
+                potencia_carregador_val = st.session_state.get(f"pot_outro_valor_{i}", 0.0)
+                potencia_carregador_val = f"{potencia_carregador_val} kW"
+            else:
+                potencia_carregador_val = potencia_carregador
+            potencias_carregadores.append(potencia_carregador_val)
+
+        if quantidade_carregadores_int <= 1:
+            potencia_carregador_val = potencias_carregadores[0] if potencias_carregadores else ""
         else:
-            potencia_carregador_val = potencia_carregador
+            potencia_carregador_val = "; ".join(
+                [f"Carregador {idx + 1}: {pot}" for idx, pot in enumerate(potencias_carregadores)]
+            )
         # Define o tipo de alimentação elétrica selecionado
         alimentacao = st.session_state.get("alimentacao", "")
         monofasica = alimentacao == "Monofásica"
@@ -695,6 +730,10 @@ with tab_visita:
             "Cliente não escolheu vagas": sem_escolha_vaga,
             "Observações": observacoes,
         }
+
+        for idx, potencia in enumerate(potencias_carregadores, start=1):
+            data[f"Potência Carregador {idx}"] = potencia
+
         df = pd.DataFrame([data])
         # Define pasta de saída "Docs Salvos" ao lado deste script
         docs_dir = Path(__file__).with_name("Docs Salvos")
