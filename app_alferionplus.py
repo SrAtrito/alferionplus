@@ -31,6 +31,8 @@ def inicializa_session_state():
         "corrente_t": "",
         "direcao": "↑",
         "trecho": 0.0,
+        "direcao_quadro": "↑",
+        "trecho_quadro": 0.0,
         "possui_carregador": "",
         "quantidade_carregadores": 1,
         "quadro_distribuicao": "",
@@ -86,6 +88,8 @@ def inicializa_session_state():
     # Lista de percursos, especial
     if "percursos" not in st.session_state:
         st.session_state["percursos"] = []
+    if "percursos_quadro" not in st.session_state:
+        st.session_state["percursos_quadro"] = []
 
 inicializa_session_state()
 
@@ -472,6 +476,42 @@ with tab_visita:
                 corrente_t = st.text_input("T", key="corrente_t")
 
 
+    if st.session_state.get("quadro_distribuicao", "") == "Sim":
+        with st.expander("📊 Soma da Distância do Quadro de Distribuição com Direções", expanded=False):
+            if "percursos_quadro" not in st.session_state:
+                st.session_state.percursos_quadro = []
+
+            with st.form(key="percurso_quadro_form"):
+                col_a, col_b = st.columns([2, 1])
+                with col_a:
+                    direcao_quadro = st.selectbox(
+                        "Direção", ["↑", "↓", "→", "←", "↷", "↶"], key="direcao_quadro"
+                    )
+                with col_b:
+                    trecho_quadro = st.number_input(
+                        "Distância (m)", min_value=0.0, step=0.5, key="trecho_quadro"
+                    )
+                submitted_quadro = st.form_submit_button("Adicionar trecho")
+
+            if submitted_quadro:
+                st.session_state.percursos_quadro.append(
+                    (st.session_state.direcao_quadro, st.session_state.trecho_quadro)
+                )
+
+            if st.session_state.percursos_quadro:
+                total_quadro = sum(t[1] for t in st.session_state.percursos_quadro)
+                total_quadro_str = f"{total_quadro:g}"
+                st.markdown("**Trechos registrados:**")
+                for i, (d, t) in enumerate(st.session_state.percursos_quadro):
+                    col1, col2 = st.columns([4, 1])
+                    with col1:
+                        st.markdown(f"{i+1}. {d} {t} m")
+                    with col2:
+                        if st.button("❌", key=f"delete_quadro_{i}"):
+                            st.session_state.percursos_quadro.pop(i)
+                            st.rerun()
+                st.markdown(f"**Total: {total_quadro_str} m**")
+
     with st.expander("📊 Soma da Distância com Direções", expanded=False):
         if "percursos" not in st.session_state:
             st.session_state.percursos = []
@@ -641,6 +681,11 @@ with tab_visita:
         from pathlib import Path
         # Recalcula soma de percursos
         total_dist = sum(t[1] for t in st.session_state.percursos) if "percursos" in st.session_state else 0
+        total_dist_quadro = (
+            sum(t[1] for t in st.session_state.percursos_quadro)
+            if "percursos_quadro" in st.session_state
+            else 0
+        )
         quantidade_carregadores_int = int(st.session_state.get("quantidade_carregadores", 0))
         potencias_carregadores = []
         for i in range(1, quantidade_carregadores_int + 1):
@@ -698,6 +743,7 @@ with tab_visita:
             "Corrente T": corrente_t,
             "Corrente Calculada": st.session_state.get("corrente_calculada", ""),
             "Soma Distância (m)": total_dist,
+            "Soma Distância Quadro de Distribuição (m)": total_dist_quadro,
             "Cliente já possui carregador": possui_carregador,
             "Quantidade Carregadores": quantidade_carregadores,
             "Quadro de distribuição": st.session_state.get("quadro_distribuicao", ""),
