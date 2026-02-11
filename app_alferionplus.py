@@ -33,6 +33,7 @@ def inicializa_session_state():
         "trecho": 0.0,
         "possui_carregador": "",
         "quantidade_carregadores": 1,
+        "quadro_distribuicao": "",
         "potencia_carregador": "",
         "pot_outro_valor": 0.0,
         "marca_carregadores": "",
@@ -261,6 +262,16 @@ with tab_visita:
             )
 
         quantidade_carregadores_int = int(quantidade_carregadores)
+
+        if quantidade_carregadores_int > 1:
+            st.radio(
+                "Quadro de distribuição",
+                ["Sim", "Não"],
+                horizontal=True,
+                key="quadro_distribuicao",
+            )
+        else:
+            st.session_state["quadro_distribuicao"] = ""
 
         if quantidade_carregadores_int <= 1:
             st.markdown("**Potência dos carregadores:**")
@@ -689,6 +700,7 @@ with tab_visita:
             "Soma Distância (m)": total_dist,
             "Cliente já possui carregador": possui_carregador,
             "Quantidade Carregadores": quantidade_carregadores,
+            "Quadro de distribuição": st.session_state.get("quadro_distribuicao", ""),
             "Potência Carregador": potencia_carregador_val,
             "Marca Carregadores": marca_carregadores,
             "Standard ou Smart": tipo_conectividade,
