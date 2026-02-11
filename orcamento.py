@@ -437,6 +437,9 @@ def _collect_visita_report_row():
         "Quantidade de Carregadores": st.session_state.get(
             "quantidade_carregadores", ""
         ),
+        "Quadro de distribuição": st.session_state.get(
+            "quadro_distribuicao", ""
+        ),
         "Potência do Carregador": st.session_state.get(
             "potencia_carregador", ""
         ),
@@ -495,6 +498,9 @@ def _collect_resumo_report_row():
         "Possui Carregador": st.session_state.get("possui_carregador", ""),
         "Quantidade de Carregadores": st.session_state.get(
             "quantidade_carregadores", ""
+        ),
+        "Quadro de distribuição": st.session_state.get(
+            "quadro_distribuicao", ""
         ),
         "Potência do Carregador": st.session_state.get(
             "potencia_carregador", ""
