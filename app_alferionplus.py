@@ -266,7 +266,7 @@ with tab_visita:
         if quantidade_carregadores_int > 1:
             st.radio(
                 "Quadro de distribuição",
-                ["Sim", "Não"],
+                ["", "Sim", "Não"],
                 horizontal=True,
                 key="quadro_distribuicao",
             )
