@@ -403,7 +403,7 @@ def dimensionar_dps(
 def render_dimensionamento_tab(tab_dimensionamento):
     """Renderiza a aba de Dimensionamento."""
     with tab_dimensionamento:
-        tab_resumo, tab_tabelas_eletricas = st.tabs(["Resumo", "Tabelas Elétricas"])
+        tab_resumo, tab_tabelas_eletricas = st.tabs(["CE Único", "Tabelas Elétricas"])
 
         with tab_resumo:
             tipo_servico_dim = st.session_state.get("tipo_servico", "")
