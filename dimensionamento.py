@@ -1039,6 +1039,7 @@ def render_dimensionamento_tab(tab_dimensionamento):
                     st.text_input(
                         "Distãncia entre Alimentação e Distribuição",
                         value=f"{total_quadro:g}",
+                        key="distancia_alimentacao_distribuicao_tecnica",
                         disabled=True,
                     )
 
