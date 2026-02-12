@@ -1034,23 +1034,19 @@ def render_dimensionamento_tab(tab_dimensionamento):
             with tab_quadro_distribuicao:
                 percursos_quadro = st.session_state.get("percursos_quadro", [])
                 total_quadro = sum(trecho for _, trecho in percursos_quadro)
+                st.session_state["distancia_alimentacao_distribuicao_tecnica"] = (
+                    f"{total_quadro:g}"
+                )
 
                 with st.expander("🛠️ Informações Técnicas", expanded=False):
                     st.text_input(
                         "Distãncia entre Alimentação e Distribuição",
-                        value=f"{total_quadro:g}",
+                        value=st.session_state[
+                            "distancia_alimentacao_distribuicao_tecnica"
+                        ],
                         key="distancia_alimentacao_distribuicao_tecnica",
                         disabled=True,
                     )
-
-                st.subheader("📊 Distância do Quadro de Distribuição")
-                if not percursos_quadro:
-                    st.info("Nenhum trecho do quadro de distribuição foi registrado ainda.")
-                else:
-                    st.markdown(f"**Total:** {total_quadro:g} m")
-                    st.markdown("**Trechos registrados:**")
-                    for idx, (direcao, trecho) in enumerate(percursos_quadro, start=1):
-                        st.markdown(f"{idx}. {direcao} {trecho:g} m")
 
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
