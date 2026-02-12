@@ -403,7 +403,18 @@ def dimensionar_dps(
 def render_dimensionamento_tab(tab_dimensionamento):
     """Renderiza a aba de Dimensionamento."""
     with tab_dimensionamento:
-        tab_resumo, tab_tabelas_eletricas = st.tabs(["CE Único", "Tabelas Elétricas"])
+        exibir_tab_quadro_distribuicao = (
+            st.session_state.get("quadro_distribuicao", "") == "Sim"
+        )
+        nomes_abas = ["CE Único", "Tabelas Elétricas"]
+        if exibir_tab_quadro_distribuicao:
+            nomes_abas.append("Quadro de Distribuição")
+        abas_dimensionamento = st.tabs(nomes_abas)
+        tab_resumo = abas_dimensionamento[0]
+        tab_tabelas_eletricas = abas_dimensionamento[1]
+        tab_quadro_distribuicao = (
+            abas_dimensionamento[2] if exibir_tab_quadro_distribuicao else None
+        )
 
         with tab_resumo:
             tipo_servico_dim = st.session_state.get("tipo_servico", "")
@@ -1015,6 +1026,19 @@ def render_dimensionamento_tab(tab_dimensionamento):
                 disabled=True,
                 label_visibility="collapsed",
             )
+
+        if tab_quadro_distribuicao is not None:
+            with tab_quadro_distribuicao:
+                st.subheader("📊 Distância do Quadro de Distribuição")
+                percursos_quadro = st.session_state.get("percursos_quadro", [])
+                if not percursos_quadro:
+                    st.info("Nenhum trecho do quadro de distribuição foi registrado ainda.")
+                else:
+                    total_quadro = sum(trecho for _, trecho in percursos_quadro)
+                    st.markdown(f"**Total:** {total_quadro:g} m")
+                    st.markdown("**Trechos registrados:**")
+                    for idx, (direcao, trecho) in enumerate(percursos_quadro, start=1):
+                        st.markdown(f"{idx}. {direcao} {trecho:g} m")
 
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
