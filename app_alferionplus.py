@@ -476,6 +476,7 @@ with tab_visita:
                 corrente_t = st.text_input("T", key="corrente_t")
 
 
+    total_quadro = 0.0
     if st.session_state.get("quadro_distribuicao", "") == "Sim":
         with st.expander("📊 Soma da Distância do Quadro de Distribuição com Direções", expanded=False):
             if "percursos_quadro" not in st.session_state:
@@ -511,6 +512,14 @@ with tab_visita:
                             st.session_state.percursos_quadro.pop(i)
                             st.rerun()
                 st.markdown(f"**Total: {total_quadro_str} m**")
+
+    st.session_state["distancia_alimentacao_distribuicao"] = total_quadro
+    with st.expander("🛠️ Informações Técnicas", expanded=False):
+        st.text_input(
+            "Distãncia entre Alimentação e Distribuição",
+            value=f"{total_quadro:g}",
+            disabled=True,
+        )
 
     with st.expander("📊 Soma da Distância com Direções", expanded=False):
         if "percursos" not in st.session_state:
