@@ -514,12 +514,6 @@ with tab_visita:
                 st.markdown(f"**Total: {total_quadro_str} m**")
 
     st.session_state["distancia_alimentacao_distribuicao"] = total_quadro
-    with st.expander("🛠️ Informações Técnicas", expanded=False):
-        st.text_input(
-            "Distãncia entre Alimentação e Distribuição",
-            value=f"{total_quadro:g}",
-            disabled=True,
-        )
 
     with st.expander("📊 Soma da Distância com Direções", expanded=False):
         if "percursos" not in st.session_state:
