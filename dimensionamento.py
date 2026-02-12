@@ -1048,6 +1048,107 @@ def render_dimensionamento_tab(tab_dimensionamento):
                         disabled=True,
                     )
 
+                    st.markdown("**Medições da aba Visita**")
+
+                    col_rs, col_rt, col_st = st.columns(3)
+                    with col_rs:
+                        st.text_input(
+                            "Tensão R/S",
+                            value=st.session_state.get("tensao_rs", ""),
+                            key="tecnica_tensao_rs",
+                            disabled=True,
+                        )
+                    with col_rt:
+                        st.text_input(
+                            "Tensão R/T",
+                            value=st.session_state.get("tensao_rt", ""),
+                            key="tecnica_tensao_rt",
+                            disabled=True,
+                        )
+                    with col_st:
+                        st.text_input(
+                            "Tensão S/T",
+                            value=st.session_state.get("tensao_st", ""),
+                            key="tecnica_tensao_st",
+                            disabled=True,
+                        )
+
+                    col_rn, col_sn, col_tn = st.columns(3)
+                    with col_rn:
+                        st.text_input(
+                            "Tensão R/N",
+                            value=st.session_state.get("tensao_rn", ""),
+                            key="tecnica_tensao_rn",
+                            disabled=True,
+                        )
+                    with col_sn:
+                        st.text_input(
+                            "Tensão S/N",
+                            value=st.session_state.get("tensao_sn", ""),
+                            key="tecnica_tensao_sn",
+                            disabled=True,
+                        )
+                    with col_tn:
+                        st.text_input(
+                            "Tensão T/N",
+                            value=st.session_state.get("tensao_tn", ""),
+                            key="tecnica_tensao_tn",
+                            disabled=True,
+                        )
+
+                    col_rtt, col_stt, col_ttt = st.columns(3)
+                    with col_rtt:
+                        st.text_input(
+                            "Tensão R/T Terra",
+                            value=st.session_state.get("tensao_rtt", ""),
+                            key="tecnica_tensao_rtt",
+                            disabled=True,
+                        )
+                    with col_stt:
+                        st.text_input(
+                            "Tensão S/T Terra",
+                            value=st.session_state.get("tensao_stt", ""),
+                            key="tecnica_tensao_stt",
+                            disabled=True,
+                        )
+                    with col_ttt:
+                        st.text_input(
+                            "Tensão T/T Terra",
+                            value=st.session_state.get("tensao_ttt", ""),
+                            key="tecnica_tensao_ttt",
+                            disabled=True,
+                        )
+
+                    st.text_input(
+                        "Tensão N/T",
+                        value=st.session_state.get("tensao_n_t", ""),
+                        key="tecnica_tensao_n_t",
+                        disabled=True,
+                    )
+
+                    col_r, col_s, col_t = st.columns(3)
+                    with col_r:
+                        st.text_input(
+                            "Corrente R",
+                            value=st.session_state.get("corrente_r", ""),
+                            key="tecnica_corrente_r",
+                            disabled=True,
+                        )
+                    with col_s:
+                        st.text_input(
+                            "Corrente S",
+                            value=st.session_state.get("corrente_s", ""),
+                            key="tecnica_corrente_s",
+                            disabled=True,
+                        )
+                    with col_t:
+                        st.text_input(
+                            "Corrente T",
+                            value=st.session_state.get("corrente_t", ""),
+                            key="tecnica_corrente_t",
+                            disabled=True,
+                        )
+
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
                 st.session_state[
