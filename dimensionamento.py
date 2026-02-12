@@ -406,14 +406,17 @@ def render_dimensionamento_tab(tab_dimensionamento):
         exibir_tab_quadro_distribuicao = (
             st.session_state.get("quadro_distribuicao", "") == "Sim"
         )
-        nomes_abas = ["CE Único", "Tabelas Elétricas"]
+        nomes_abas = ["CE Único"]
         if exibir_tab_quadro_distribuicao:
             nomes_abas.append("Quadro de Distribuição")
+        nomes_abas.append("Tabelas Elétricas")
         abas_dimensionamento = st.tabs(nomes_abas)
         tab_resumo = abas_dimensionamento[0]
-        tab_tabelas_eletricas = abas_dimensionamento[1]
         tab_quadro_distribuicao = (
-            abas_dimensionamento[2] if exibir_tab_quadro_distribuicao else None
+            abas_dimensionamento[1] if exibir_tab_quadro_distribuicao else None
+        )
+        tab_tabelas_eletricas = (
+            abas_dimensionamento[2] if exibir_tab_quadro_distribuicao else abas_dimensionamento[1]
         )
 
         with tab_resumo:
