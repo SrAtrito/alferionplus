@@ -44,6 +44,7 @@ def inicializa_session_state():
         "bifasica": False,
         "trifasica": False,
         "painel_sistema": "Monofásico",
+        "painel_fator_potencia": 1.0,
         "dj_disjuntor": False,
         "dj_fusivel": False,
         "dj_outro": False,
