@@ -1186,6 +1186,12 @@ def render_dimensionamento_tab(tab_dimensionamento):
                         key="painel_sistema",
                         horizontal=True,
                     )
+                    st.number_input(
+                        "Tensão",
+                        min_value=0,
+                        step=1,
+                        key="painel_tensao",
+                    )
 
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
