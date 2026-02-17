@@ -1192,6 +1192,12 @@ def render_dimensionamento_tab(tab_dimensionamento):
                         step=1,
                         key="painel_tensao",
                     )
+                    st.number_input(
+                        "Fator de Potência",
+                        min_value=0.0,
+                        step=0.01,
+                        key="painel_fator_potencia",
+                    )
 
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
