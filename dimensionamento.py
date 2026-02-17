@@ -95,6 +95,42 @@ def _atualizar_corrente_nominal_manual() -> None:
     st.session_state["corrente_nominal_manual"] = corrente_nominal != corrente_calculada
 
 
+def _extrair_potencia_kw(valor: Any) -> float:
+    """Extrai um valor de potência em kW a partir de texto ou número."""
+    if valor is None:
+        return 0.0
+    if isinstance(valor, (int, float)):
+        return float(valor)
+
+    texto = str(valor).strip().lower()
+    if not texto:
+        return 0.0
+
+    match = re.search(r"\d+(?:[\.,]\d+)?", texto)
+    if not match:
+        return 0.0
+
+    try:
+        return float(match.group(0).replace(",", "."))
+    except ValueError:
+        return 0.0
+
+
+def _obter_potencia_total_carregadores() -> float:
+    """Soma a potência (kW) dos carregadores selecionados na aba Visita."""
+    quantidade = int(st.session_state.get("quantidade_carregadores", 0) or 0)
+    potencia_total = 0.0
+
+    for i in range(1, quantidade + 1):
+        potencia = st.session_state.get(f"potencia_carregador_{i}", "")
+        if potencia == "Outro":
+            potencia_total += float(st.session_state.get(f"pot_outro_valor_{i}", 0.0) or 0.0)
+        else:
+            potencia_total += _extrair_potencia_kw(potencia)
+
+    return potencia_total
+
+
 def _normalizar_valor_bitola(valor) -> Optional[float]:
     """Converte representações de bitola em um valor numérico."""
 
@@ -1039,6 +1075,7 @@ def render_dimensionamento_tab(tab_dimensionamento):
                 )
 
                 with st.expander("🛠️ Informações Técnicas", expanded=False):
+                    potencia_total_carregadores = _obter_potencia_total_carregadores()
                     st.text_input(
                         "Distãncia entre Alimentação e Distribuição",
                         value=st.session_state[
@@ -1135,6 +1172,12 @@ def render_dimensionamento_tab(tab_dimensionamento):
                             value=st.session_state.get("corrente_t", ""),
                             disabled=True,
                         )
+
+                    st.text_input(
+                        "Potência total",
+                        value=f"{potencia_total_carregadores:g} kW",
+                        disabled=True,
+                    )
 
                 with st.expander("🧰 Painel", expanded=False):
                     st.markdown("_Sem informações de painel cadastradas._")
