@@ -104,6 +104,10 @@ from dimensionamento import render_dimensionamento_tab
 from calculo_servico import render_calculo_servico_tab
 from custos import format_currency, render_custos_tab
 from orcamento import render_orcamento_tab
+from quadro_distribuicao import (
+    render_quadro_distribuicao_selector,
+    render_quadro_distribuicao_distancias,
+)
 
 st.set_page_config(page_title="Formulário de Visita Técnica", layout="centered")
 
@@ -269,15 +273,7 @@ with tab_visita:
 
         quantidade_carregadores_int = int(quantidade_carregadores)
 
-        if quantidade_carregadores_int > 1:
-            st.radio(
-                "Quadro de distribuição",
-                ["", "Sim", "Não"],
-                horizontal=True,
-                key="quadro_distribuicao",
-            )
-        else:
-            st.session_state["quadro_distribuicao"] = ""
+        render_quadro_distribuicao_selector(quantidade_carregadores_int)
 
         if quantidade_carregadores_int <= 1:
             st.markdown("**Potência dos carregadores:**")
@@ -478,44 +474,7 @@ with tab_visita:
                 corrente_t = st.text_input("T", key="corrente_t")
 
 
-    total_quadro = 0.0
-    if st.session_state.get("quadro_distribuicao", "") == "Sim":
-        with st.expander("📊 Soma da Distância do Quadro de Distribuição com Direções", expanded=False):
-            if "percursos_quadro" not in st.session_state:
-                st.session_state.percursos_quadro = []
-
-            with st.form(key="percurso_quadro_form"):
-                col_a, col_b = st.columns([2, 1])
-                with col_a:
-                    direcao_quadro = st.selectbox(
-                        "Direção", ["↑", "↓", "→", "←", "↷", "↶"], key="direcao_quadro"
-                    )
-                with col_b:
-                    trecho_quadro = st.number_input(
-                        "Distância (m)", min_value=0.0, step=0.5, key="trecho_quadro"
-                    )
-                submitted_quadro = st.form_submit_button("Adicionar trecho")
-
-            if submitted_quadro:
-                st.session_state.percursos_quadro.append(
-                    (st.session_state.direcao_quadro, st.session_state.trecho_quadro)
-                )
-
-            if st.session_state.percursos_quadro:
-                total_quadro = sum(t[1] for t in st.session_state.percursos_quadro)
-                total_quadro_str = f"{total_quadro:g}"
-                st.markdown("**Trechos registrados:**")
-                for i, (d, t) in enumerate(st.session_state.percursos_quadro):
-                    col1, col2 = st.columns([4, 1])
-                    with col1:
-                        st.markdown(f"{i+1}. {d} {t} m")
-                    with col2:
-                        if st.button("❌", key=f"delete_quadro_{i}"):
-                            st.session_state.percursos_quadro.pop(i)
-                            st.rerun()
-                st.markdown(f"**Total: {total_quadro_str} m**")
-
-    st.session_state["distancia_alimentacao_distribuicao"] = total_quadro
+    render_quadro_distribuicao_distancias()
 
     with st.expander("📊 Soma da Distância com Direções", expanded=False):
         if "percursos" not in st.session_state:
