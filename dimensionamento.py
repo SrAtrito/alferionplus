@@ -1180,7 +1180,12 @@ def render_dimensionamento_tab(tab_dimensionamento):
                     )
 
                 with st.expander("🧰 Painel", expanded=False):
-                    st.markdown("_Sem informações de painel cadastradas._")
+                    st.radio(
+                        "Sistema",
+                        ["Monofásico", "Bifásico", "Trifásico"],
+                        key="painel_sistema",
+                        horizontal=True,
+                    )
 
         with tab_resumo:
             with st.expander("\U0001F4D0 Dimensionamento da Infra-Seca", expanded=False):
