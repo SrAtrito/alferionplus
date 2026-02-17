@@ -1038,6 +1038,9 @@ def render_dimensionamento_tab(tab_dimensionamento):
                     f"{total_quadro:g}"
                 )
 
+                with st.expander("🧰 Painel", expanded=False):
+                    st.markdown("_Sem informações de painel cadastradas._")
+
                 with st.expander("🛠️ Informações Técnicas", expanded=False):
                     st.text_input(
                         "Distãncia entre Alimentação e Distribuição",
